@@ -6,6 +6,8 @@ import points3 from "./data/points3.json";
 import mapboxgl from "mapbox-gl";
 
 import mitt from 'mitt';
+import { Button } from "antd";
+import LayerManageView from "./manage/LayerManageView";
 
 const emitter = mitt();
 
@@ -89,11 +91,9 @@ function App() {
         <div className="App p-10 flex items-center flex-col">
             <div className="w-1/2">
                 <h1 className="font-bold font-5xl">Map Demo</h1>
-                <button 
-                    onClick={e => {
-                        emitter.emit('toggle', {});
-                    }}
-                    className='px-4 py-2 text-white bg-blue-400 rounded active:bg-blue-200 shadow-md hover:bg-blue-700'>Toggle</button>
+                <LayerManageView onAddLayer={(title, content) => {
+                    console.log(title, content);
+                }}/>
                 <div id="map" className="h-10"></div>
             </div>
         </div>
