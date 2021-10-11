@@ -22,7 +22,7 @@ const defaultLayers = [
 ];
 
 function App() {
-    const [visible, setVisible] = useState(true);
+    const [, setVisible] = useState(true);
     const [layers, setLayers] = useState(defaultLayers);
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
@@ -65,7 +65,10 @@ function App() {
                     'text-size': 12,
                 },
                 paint: {
-                    "text-translate": [4, 4]
+                    "text-translate": [4, 4],
+                    'text-halo-blur': 2,
+                    "text-halo-width": 2,
+                    "text-halo-color": '#FFF'
                 },
                 filter: ["==", "$type", "Point"],
             });
@@ -104,7 +107,7 @@ function App() {
             emitter.off('*', listener);
             map.remove();
         }
-    }, []);
+    });
 
     return (
         <div className="App p-10 flex items-center flex-col">
