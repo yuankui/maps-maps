@@ -2,7 +2,7 @@ import mapboxgl from "mapbox-gl";
 import { useEffect, useState } from "react";
 
 
-function FeatureMap({emitter, accessToken, id, mapStyle}) {
+function FeatureMap({ emitter, accessToken, id, mapStyle }) {
 
     const [key] = useState(id);
     useEffect(() => {
@@ -80,7 +80,7 @@ function FeatureMap({emitter, accessToken, id, mapStyle}) {
         }
     }, []);
 
-    return <div id={key}/>
+    return <div id={key} />
 }
 
 export default FeatureMap;
