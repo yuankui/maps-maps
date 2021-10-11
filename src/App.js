@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import points1 from "./data/points1.json";
 import LayerManageView from "./manage/LayerManageView";
-
+import {EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons';
 
 const emitter = mitt();
 
@@ -30,6 +30,11 @@ function App() {
             center: [113.934298, 22.506958],
             zoom: 10,
         });
+
+        map.addControl(new mapboxgl.FullscreenControl());
+        map.addControl(new mapboxgl.NavigationControl());
+
+
 
         const addLayer = (layer) => {
             map.addSource(layer.name, {
@@ -105,12 +110,29 @@ function App() {
 
     return (
         <div className="App p-10 flex items-center flex-col">
-            <div className="w-1/2">
+            <div className="w-3/4">
                 <h1 className="font-bold font-5xl">Map Demo</h1>
                 
-                <div className='relative'>
-                    <div id="map" className="h-10"></div>
-                    <h1 className='absolute left-2 top-2'>
+                <div className='relative flex flex-col items-stretch'>
+                    <div id="map" className=""></div>
+                    <dev className='absolute left-2 top-2 bg-white p-5 rounded'>
+                        <h1 className='text-2xl mb-4'>图层管理</h1>
+                        {
+                            [1,2].map(d => {
+                                return <div key={d} className='mb-2 w-48 flex flex-row items-center py-1 px-2 border-2 rounded justify-between'>
+                                    <div className='flex flex-row items-center'>
+                                        <div className='p-1 pr-2'>图层名</div>
+                                        <div className='inline-flex w-3 h-3 bg-blue-500 rounded-full'></div>
+                                    </div>
+                                    <div className='flex flex-row items-center justify-center'>
+                                        <a href='#' className='flex flex-row items-center'>
+                                            {<EyeOutlined />}
+                                        </a>
+                                    </div>
+                                </div>    
+                            })
+                        }
+                        
                         <LayerManageView onAddLayer={({title, data, color}) => {
                             console.log(title, data, color);
                             setLayers(prev => [...prev, {
@@ -124,7 +146,7 @@ function App() {
                                 points: data,
                             })
                         }}/>
-                    </h1>
+                    </dev>
                 </div>
             </div>
         </div>

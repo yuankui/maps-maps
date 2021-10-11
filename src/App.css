@@ -1,4 +1,9 @@
-.mapboxgl-control-container {
+.mapboxgl-ctrl-attrib {
     /* 隐藏map下面的东西 */
     display: none; 
+}
+
+#map {
+    height: 800px;
+    max-height: 100%;
 }
