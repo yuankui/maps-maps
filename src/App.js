@@ -1,5 +1,5 @@
 import mitt from 'mitt';
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import FeatureMap from "./components/FeatureMap";
 import LayerListView from './components/LayerListView';
@@ -15,32 +15,33 @@ function App() {
     const [layers, setLayers] = useState([]);
 
     // 新增一组位置
-    const addLayer = useCallback((newLayer) => {
-        setLayers(prev => [...prev, newLayer]);
+    const addLayer = (newLayer) => {
+        const sameNameLayer = layers.filter(layer => layer.name == newLayer.name);
+        if (sameNameLayer.length > 0) {
+            throw new Error("名称重复");
+        }
+        setLayers([...layers, newLayer]);
         emitter.emit('add-layer', newLayer);
-    }, []);
+    }
 
     // 禁用
-    const toggleLayer = useCallback((name) => {
-        setLayers(prev => {
-            
-            let layerVisible = false;
+    const toggleLayer = (name) => {
+        let layerVisible = false;
 
-            const newLayers = prev.map(layer => {
-                return layer.name !== name ? layer : {
-                    ...layer,
-                    visible: layerVisible = !layer.visible
-                }
-            });
+        const newLayers = layers.map(layer => {
+            return layer.name !== name ? layer : {
+                ...layer,
+                visible: (layerVisible = !layer.visible)
+            }
+        });
 
-            emitter.emit('set-layer-visible', {
-                name: name,
-                visible: layerVisible
-            });
+        emitter.emit('set-layer-visible', {
+            name: name,
+            visible: layerVisible
+        });
 
-            return newLayers;
-        })
-    }, [])
+        return setLayers(newLayers);
+    }
 
     return (
         <div className="App p-10 flex items-center flex-col">
