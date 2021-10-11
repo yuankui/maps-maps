@@ -1,4 +1,5 @@
 @import '~antd/dist/antd.css';
+@import '~mapbox-gl/src/css/mapbox-gl.css';
 
 @tailwind base;
 @tailwind components;

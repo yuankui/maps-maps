@@ -114,20 +114,25 @@ function App() {
         <div className="App p-10 flex items-center flex-col">
             <div className="w-1/2">
                 <h1 className="font-bold font-5xl">Map Demo</h1>
-                <LayerManageView onAddLayer={({title, data, color}) => {
-                    console.log(title, data, color);
-                    setLayers(prev => [...prev, {
-                        name: title,
-                        color,
-                        points: data,
-                    }]);
-                    emitter.emit('add-layer', {
-                        name: title,
-                        color,
-                        points: data,
-                    })
-                }}/>
-                <div id="map" className="h-10"></div>
+                
+                <div className='relative'>
+                    <div id="map" className="h-10"></div>
+                    <h1 className='absolute left-2 top-2'>
+                        <LayerManageView onAddLayer={({title, data, color}) => {
+                            console.log(title, data, color);
+                            setLayers(prev => [...prev, {
+                                name: title,
+                                color,
+                                points: data,
+                            }]);
+                            emitter.emit('add-layer', {
+                                name: title,
+                                color,
+                                points: data,
+                            })
+                        }}/>
+                    </h1>
+                </div>
             </div>
         </div>
     );
