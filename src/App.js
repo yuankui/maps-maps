@@ -1,6 +1,6 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import mitt from 'mitt';
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
 import FeatureMap from "./FeatureMap";
 import LayerManageView from "./manage/LayerManageView";
@@ -9,22 +9,54 @@ const emitter = mitt();
 
 const accessToken =
     "pk.eyJ1IjoieXVhbmt1aSIsImEiOiJja3VtNGhranUwNzg3MzBsaWx2dnFod2ZjIn0.gCAWnEO9GQ2reK72LZXUQA";
+const styleUrl = "mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd";
 
 function App() {
     const [layers, setLayers] = useState([]);
+
+    // 新增一组位置
+    const addLayer = useCallback((newLayer) => {
+        setLayers(prev => [...prev, newLayer]);
+        emitter.emit('add-layer', newLayer);
+    }, []);
+
+    // 禁用
+    const toggleLayer = useCallback((name) => {
+        setLayers(prev => {
+            
+            let layerVisible = false;
+
+            const newLayers = prev.map(layer => {
+                return layer.name !== name ? layer : {
+                    ...layer,
+                    visible: layerVisible = !layer.visible
+                }
+            });
+
+            emitter.emit('set-layer-visible', {
+                name: name,
+                visible: layerVisible
+            });
+
+            return newLayers;
+        })
+    }, [])
+
     return (
         <div className="App p-10 flex items-center flex-col">
             <div className="w-3/4">
                 <h1 className="font-bold font-5xl">Map Demo</h1>
                 
                 <div className='relative flex flex-col items-stretch'>
-                    <FeatureMap 
+                    {/* 地图 */}
+                    <FeatureMap
                         accessToken={accessToken} 
-                        mapStyle={"mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd"}
+                        mapStyle={styleUrl}
                         emitter={emitter}
                         id='map'
                         />
-                    <dev className='absolute left-2 top-2 bg-white p-5 rounded w-56'>
+                    {/* 控制面板 */}
+                    <div className='absolute left-2 top-2 bg-white p-5 rounded w-56'>
                         <h1 className='text-2xl mb-4'>图层管理</h1>
                         {
                             layers.map(layer => {
@@ -40,23 +72,8 @@ function App() {
                                     </div>
                                     <div className='flex flex-row items-center justify-center'>
                                         <a href='' onClick={e => {
-                                            // 禁用
-                                            const newLayers = layers.map(l => {
-                                                if (l.name === layer.name) {
-                                                    return {
-                                                        ...layer,
-                                                        visible: !layer.visible
-                                                    };
-                                                } else {
-                                                    return l;
-                                                }
-                                            })
-                                            setLayers(newLayers);
-                                            emitter.emit('set-layer-visible', {
-                                                ...layer,
-                                                visible: !layer.visible
-                                            });
-
+                                            e.preventDefault();
+                                            toggleLayer(layer.name);
                                         }} className='flex flex-row items-center'>
                                             {layer.visible ? <EyeOutlined /> : <EyeInvisibleOutlined/>}
                                         </a>
@@ -65,21 +82,16 @@ function App() {
                             })
                         }
                         
-                        <LayerManageView onAddLayer={({title, data, color}) => {
-                            console.log(title, data, color);
-                            setLayers(prev => [...prev, {
-                                name: title,
+                        {/* 弹窗 */}
+                        <LayerManageView onAddLayer={({name, points, color}) => {
+                            addLayer({
+                                name,
                                 color,
-                                points: data,
+                                points,
                                 visible: true,
-                            }]);
-                            emitter.emit('add-layer', {
-                                name: title,
-                                color,
-                                points: data,
                             })
                         }}/>
-                    </dev>
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ import { SketchPicker } from "react-color";
 function LayerManageView({onAddLayer}) {
     const [showModal, setShowModal] = useState(false);
     const [text, setText] = useState(undefined);
-    const [title, setTitle] = useState(undefined);
+    const [name, setName] = useState(undefined);
     const [color, setColor] = useState('#FFFFFF')
     return <>
         <Button onClick={e=> {
@@ -16,12 +16,12 @@ function LayerManageView({onAddLayer}) {
         <Modal visible={showModal} 
         onCancel={e=> setShowModal(false)} 
         onOk={e=> {
-            onAddLayer({title, data: JSON.parse(text), color});
+            onAddLayer({name, points: JSON.parse(text), color});
             setShowModal(false);
         }}
         >
-            <Input value={title} placeholder="LayerName" onChange={e => {
-                setTitle(e.target.value);
+            <Input value={name} placeholder="LayerName" onChange={e => {
+                setName(e.target.value);
             }}/>
             <Input type='file' onChange={async (e) => {
                 const text = await e.target.files[0].text();
