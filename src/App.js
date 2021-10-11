@@ -6,6 +6,7 @@ import points3 from "./data/points3.json";
 import mapboxgl from "mapbox-gl";
 
 import mitt from 'mitt';
+import classNames from "classnames";
 
 const emitter = mitt();
 
@@ -93,7 +94,7 @@ function App() {
                     onClick={e => {
                         emitter.emit('toggle', {});
                     }}
-                    className='px-4 py-2 bg-blue-400 rounded shadow-md hover:bg-blue-700'>Toggle</button>
+                    className='px-4 py-2 text-white bg-blue-400 rounded active:bg-blue-200 shadow-md hover:bg-blue-700'>Toggle</button>
                 <div id="map" className="h-10"></div>
             </div>
         </div>
