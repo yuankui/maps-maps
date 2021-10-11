@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import points1 from "./data/points1.json";
 import LayerManageView from "./manage/LayerManageView";
-import MapboxLanguage from '@mapbox/mapbox-gl-language';
-
 
 
 const emitter = mitt();
@@ -28,15 +26,10 @@ function App() {
         mapboxgl.accessToken = accessToken;
         const map = new mapboxgl.Map({
             container: "map",
-            style: "mapbox://styles/mapbox/streets-v11",
+            style: "mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd",
             center: [113.934298, 22.506958],
             zoom: 10,
         });
-
-        const language = new MapboxLanguage({
-            defaultLanguage: 'zh-Hans'
-        });
-        map.addControl(language);
 
         const addLayer = (layer) => {
             map.addSource(layer.name, {
