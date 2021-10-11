@@ -65,6 +65,7 @@ function App() {
                     'text-size': 12,
                 },
                 paint: {
+                    'text-color': layer.color,
                     "text-translate": [4, 4],
                     'text-halo-blur': 2,
                     "text-halo-width": 2,
