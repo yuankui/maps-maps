@@ -6,7 +6,6 @@ import points3 from "./data/points3.json";
 import mapboxgl from "mapbox-gl";
 
 import mitt from 'mitt';
-import classNames from "classnames";
 
 const emitter = mitt();
 
