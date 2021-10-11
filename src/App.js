@@ -1,120 +1,29 @@
-import mapboxgl from "mapbox-gl";
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import mitt from 'mitt';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-import points1 from "./data/points1.json";
+import FeatureMap from "./FeatureMap";
 import LayerManageView from "./manage/LayerManageView";
-import {EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons';
 
 const emitter = mitt();
 
 const accessToken =
     "pk.eyJ1IjoieXVhbmt1aSIsImEiOiJja3VtNGhranUwNzg3MzBsaWx2dnFod2ZjIn0.gCAWnEO9GQ2reK72LZXUQA";
 
-const defaultLayers = [
-    {
-        name: 'points1',
-        color: "#FF0000",
-        points: points1,
-        visible: true,
-    },
-];
-
 function App() {
-    const [, setVisible] = useState(true);
-    const [layers, setLayers] = useState(defaultLayers);
-    useEffect(() => {
-        mapboxgl.accessToken = accessToken;
-        const map = new mapboxgl.Map({
-            container: "map",
-            style: "mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd",
-            center: [113.934298, 22.506958],
-            zoom: 10,
-        });
-
-        map.addControl(new mapboxgl.FullscreenControl());
-        map.addControl(new mapboxgl.NavigationControl());
-
-
-
-        const addLayer = (layer) => {
-            map.addSource(layer.name, {
-                type: "geojson",
-                data: layer.points,
-            });
-
-            map.addLayer({
-                id: "layer-" + layer.name,
-                type: "circle",
-                source: layer.name,
-                paint: {
-                    "circle-radius": 3,
-                    "circle-color": layer.color,
-                },
-                filter: ["==", "$type", "Point"],
-            });
-
-            map.addLayer({
-                id: "layer-text-" + layer.name,
-                type: "symbol",
-                source: layer.name,
-                layout: {
-                    "text-field": '{name}',
-                    'text-anchor': 'left',
-                    'text-size': 12,
-                },
-                paint: {
-                    'text-color': layer.color,
-                    "text-translate": [4, 4],
-                    'text-halo-blur': 2,
-                    "text-halo-width": 2,
-                    "text-halo-color": '#FFF'
-                },
-                filter: ["==", "$type", "Point"],
-            });
-        }
-        const listener = (type, data) => {
-            if (type === 'set-layer-visible') {
-                if (data.visible === true) {
-                    map.setLayoutProperty('layer-text-' + data.name, 'visibility', 'visible');
-                    map.setLayoutProperty('layer-' + data.name, 'visibility', 'visible');
-                } else {
-                    map.setLayoutProperty('layer-' + data.name, 'visibility', 'none');
-                    map.setLayoutProperty('layer-text-' + data.name, 'visibility', 'none');
-                }
-                return;
-            }
-
-            if (type === 'add-layer') {
-                addLayer(data);
-            }
-        };
-
-        map.on("load", () => {
-
-            // add layer
-            for (const layer of layers) {
-                addLayer(layer);
-            };
-        });
-
-        // add listener
-        emitter.on('*', listener);
-
-        // destory
-        return () => {
-            emitter.off('*', listener);
-            map.remove();
-        }
-    }, []);
-
+    const [layers, setLayers] = useState([]);
     return (
         <div className="App p-10 flex items-center flex-col">
             <div className="w-3/4">
                 <h1 className="font-bold font-5xl">Map Demo</h1>
                 
                 <div className='relative flex flex-col items-stretch'>
-                    <div id="map" className=""></div>
+                    <FeatureMap 
+                        accessToken={accessToken} 
+                        mapStyle={"mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd"}
+                        emitter={emitter}
+                        id='map'
+                        />
                     <dev className='absolute left-2 top-2 bg-white p-5 rounded w-56'>
                         <h1 className='text-2xl mb-4'>图层管理</h1>
                         {
@@ -130,10 +39,10 @@ function App() {
                                         
                                     </div>
                                     <div className='flex flex-row items-center justify-center'>
-                                        <a href='#' onClick={e => {
+                                        <a href='' onClick={e => {
                                             // 禁用
                                             const newLayers = layers.map(l => {
-                                                if (l.name == layer.name) {
+                                                if (l.name === layer.name) {
                                                     return {
                                                         ...layer,
                                                         visible: !layer.visible
