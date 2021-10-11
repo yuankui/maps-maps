@@ -54,6 +54,21 @@ function App() {
                 },
                 filter: ["==", "$type", "Point"],
             });
+
+            map.addLayer({
+                id: "layer-text-" + layer.name,
+                type: "symbol",
+                source: layer.name,
+                layout: {
+                    "text-field": '{name}',
+                    'text-anchor': 'left',
+                    'text-size': 12,
+                },
+                paint: {
+                    "text-translate": [4, 4]
+                },
+                filter: ["==", "$type", "Point"],
+            });
         }
         const listener = (type, data) => {
             if (type === 'toggle') {
