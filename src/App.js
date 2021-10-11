@@ -7,6 +7,7 @@ import LayerManageView from "./manage/LayerManageView";
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
 
 
+
 const emitter = mitt();
 
 const accessToken =
@@ -86,8 +87,8 @@ function App() {
         // destory
         return () => {
             emitter.off('*', listener);
+            map.remove();
         }
-
     }, []);
 
     return (
