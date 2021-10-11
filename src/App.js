@@ -1,9 +1,9 @@
-import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import mitt from 'mitt';
 import { useCallback, useState } from "react";
 import "./App.css";
-import FeatureMap from "./FeatureMap";
-import LayerManageView from "./manage/LayerManageView";
+import FeatureMap from "./components/FeatureMap";
+import LayerListView from './components/LayerListView';
+import LayerManageView from "./components/LayerManageView";
 
 const emitter = mitt();
 
@@ -57,31 +57,8 @@ function App() {
                         />
                     {/* 控制面板 */}
                     <div className='absolute left-2 top-2 bg-white p-5 rounded w-56'>
-                        <h1 className='text-2xl mb-4'>图层管理</h1>
-                        {
-                            layers.map(layer => {
-                                return <div key={layer.name} className='mb-2 flex flex-row items-center py-1 px-2 border-1 rounded justify-between'>
-                                    <div className='flex flex-row items-center'>
-                                    <div className='inline-flex w-3 h-3 rounded-full mx-1' style={{
-                                            backgroundColor: layer.color,
-                                        }}/>
-                                    <div className='p-1 pr-2' style={{
-                                        opacity: layer.visible ? 1 : 0.2,
-                                    }}>{layer.name}</div>
-                                        
-                                    </div>
-                                    <div className='flex flex-row items-center justify-center'>
-                                        <a href='' onClick={e => {
-                                            e.preventDefault();
-                                            toggleLayer(layer.name);
-                                        }} className='flex flex-row items-center'>
-                                            {layer.visible ? <EyeOutlined /> : <EyeInvisibleOutlined/>}
-                                        </a>
-                                    </div>
-                                </div>    
-                            })
-                        }
-                        
+                        {/* 图层列表 */}
+                        <LayerListView layers={layers} onToggle={toggleLayer} />
                         {/* 弹窗 */}
                         <LayerManageView onAddLayer={({name, points, color}) => {
                             addLayer({
