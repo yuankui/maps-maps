@@ -1,3 +1,18 @@
 # maps
 
-- [ ] add deck.gl: https://github.com/visgl/deck.gl/blob/master/examples/get-started/react/mapbox/app.js
+## Get Started
+
+```
+
+# clone
+git clone https://github.com/yuankui/maps-maps.git
+
+cd maps-maps
+
+# download dependencies
+yarn
+
+# start the app
+yarn start
+
+```
