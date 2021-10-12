@@ -18,9 +18,11 @@ function LayerManageView({ onAddLayer }) {
         }
     }, []);
 
+    
     const hideModal = useCallback(() => {
         setShowModal(false);
         reset();
+        // eslint-disable-next-line
     }, []);
 
 
@@ -33,16 +35,16 @@ function LayerManageView({ onAddLayer }) {
         <Modal visible={showModal}
             onCancel={hideModal}
             onOk={e => {
-                if (name == null || name == '') {
+                if (name === undefined || name === '') {
                     message.error("LayerName 不能为空");
                     return;
                 }
-                if (color == null) {
+                if (color === undefined) {
                     message.error("颜色不能为空");
                     return;
                 }
 
-                if (text == undefined) {
+                if (text === undefined) {
                     message.error("text不能为空");
                     return;
                 }

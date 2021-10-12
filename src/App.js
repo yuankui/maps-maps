@@ -17,7 +17,7 @@ function App() {
     // 新增一组位置
     const addLayer = (newLayer) => {
         const sameNameLayer = layers.filter(
-            (layer) => layer.name == newLayer.name
+            (layer) => layer.name === newLayer.name
         );
         if (sameNameLayer.length > 0) {
             throw new Error("名称重复");

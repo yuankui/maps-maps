@@ -17,6 +17,7 @@ function LayerListView({ layers, onToggle }) {
 
                     </div>
                     <div className='flex flex-row items-center justify-center'>
+                        {/* eslint-disable-next-line */}
                         <a href='' onClick={e => {
                             e.preventDefault();
                             onToggle(layer.name);
