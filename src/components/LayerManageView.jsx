@@ -67,14 +67,15 @@ function LayerManageView({ onAddLayer }) {
                 hideModal();
             }}
         >
-            <Input value={name} placeholder="LayerName" onChange={e => {
+            <h1 className='m-2 text-2xl'>新增图层</h1>
+            <Input className='m-2' value={name} placeholder="LayerName" onChange={e => {
                 setName(e.target.value);
             }} />
-            <Input ref={fileRef} type='file' onChange={async (e) => {
+            <Input placeholder='geojson文件' accept='.geojson, .json' className='m-2' ref={fileRef} type='file' onChange={async (e) => {
                 const text = await e.target.files[0].text();
                 setText(text);
             }} />
-            <SketchPicker color={color} onChange={e => {
+            <SketchPicker className='m-2' color={color} onChange={e => {
                 setColor(e.hex);
             }} />
         </Modal>
