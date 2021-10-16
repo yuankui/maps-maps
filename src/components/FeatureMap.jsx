@@ -78,8 +78,7 @@ function FeatureMap({ emitter, accessToken, id, mapStyle }) {
             emitter.off('*', listener);
             map.remove();
         }
-        // eslint-disable-next-line
-    }, []);
+    }, [accessToken, mapStyle, id, emitter]);
 
     return <div id={key} />
 }

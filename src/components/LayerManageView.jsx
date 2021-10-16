@@ -22,8 +22,7 @@ function LayerManageView({ onAddLayer }) {
     const hideModal = useCallback(() => {
         setShowModal(false);
         reset();
-        // eslint-disable-next-line
-    }, []);
+    }, [reset]);
 
 
     return <>

@@ -1,6 +1,5 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
-
 function LayerListView({ layers, onToggle }) {
     return <>
         <h1 className='text-2xl mb-4'>图层管理</h1>
@@ -17,13 +16,13 @@ function LayerListView({ layers, onToggle }) {
 
                     </div>
                     <div className='flex flex-row items-center justify-center'>
-                        {/* eslint-disable-next-line */}
-                        <a href='' onClick={e => {
+                        
+                        <button href='' onClick={e => {
                             e.preventDefault();
                             onToggle(layer.name);
                         }} className='flex flex-row items-center'>
                             {layer.visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                        </a>
+                        </button>
                     </div>
                 </div>
             })
