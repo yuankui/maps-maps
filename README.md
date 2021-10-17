@@ -21,3 +21,8 @@ yarn start
 ## refer
 
 - https://deck.gl/docs/api-reference/layers/geojson-layer
+
+## TODO
+- [ ] 解决地图Control的zIndex问题
+  - https://visgl.github.io/react-map-gl/docs/api-reference/fullscreen-control
+  - https://deck.gl/docs/api-reference/react/deckgl

@@ -2,7 +2,7 @@ import { GeoJsonLayer } from '@deck.gl/layers';
 import DeckGL from '@deck.gl/react';
 import { rgb } from 'd3-color';
 import React from 'react';
-import { FullscreenControl, InteractiveMap as MapboxMap, NavigationControl } from 'react-map-gl';
+import { StaticMap as MapboxMap, FullscreenControl, NavigationControl } from 'react-map-gl';
 
 const mapboxAccessToken = 'pk.eyJ1IjoieXVhbmt1aSIsImEiOiJja3VtNGhranUwNzg3MzBsaWx2dnFod2ZjIn0.gCAWnEO9GQ2reK72LZXUQA';
 const mapboxStyle = "mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd"
@@ -53,21 +53,21 @@ function DeckGLView({ geoJsons }) {
         controller={true}
         layers={layers}
     >
-        <FullscreenControl style={{
-            right: 10,
-            top: 10
-        }} />
-
-        <NavigationControl
-            showCompass={false}
-            style={{
-                right: 20,
-                bottom: 100
-            }} />
-
         <MapboxMap
             mapStyle={mapboxStyle}
-            mapboxApiAccessToken={mapboxAccessToken} />
+            mapboxApiAccessToken={mapboxAccessToken}>
+            <FullscreenControl style={{
+                right: 10,
+                top: 10,
+                zIndex: 10,
+            }} />
+
+            <NavigationControl style={{
+                right: 10,
+                top: 50
+            }} />
+        </MapboxMap>
+        
     </DeckGL>
 }
 
