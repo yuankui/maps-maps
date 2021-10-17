@@ -1,3 +1,5 @@
+const babelIgnoreMapboxPlugin = require("./craco-babel-ignore-mapbox");
+
 module.exports = {
     style: {
       postcss: {
@@ -7,5 +9,10 @@ module.exports = {
         ],
       },
     },
+    plugins: [
+      {
+        plugin: babelIgnoreMapboxPlugin
+      }
+    ]
   }
   
