@@ -29,6 +29,7 @@ function AddLayerView({ onAddLayer }) {
         <Modal
             visible={showModal}
             onCancel={hideModal}
+            footer={null}
         >
             <h1 className='m-2 text-2xl'>新增图层</h1>
             <Form onFinish={finishForm}>
@@ -42,10 +43,12 @@ function AddLayerView({ onAddLayer }) {
                     <ColorInput />
                 </Form.Item>
                 <Form.Item>
-                    <Button onClick={hideModal}>Cancel</Button>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
+                    <div className='flex flex-row justify-end gap-2'>
+                        <Button onClick={hideModal}>Cancel</Button>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </div>
                 </Form.Item>
             </Form>
         </Modal>
