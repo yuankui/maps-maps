@@ -1,55 +1,53 @@
-import { Button, Form, Input, message, Modal } from "antd";
-import { useCallback, useState } from "react";
-import ColorInput from "./form/ColorInput";
-import GeojsonFileInput from "./form/GeojsonFileInput";
+import LayerListView from "./LayerListView";
+import AddLayerView from "./AddLayerView";
 
-
-function LayerManageView({ onAddLayer }) {
-    const [showModal, setShowModal] = useState(false);
-
-    const hideModal = useCallback(() => {
-        setShowModal(false);
-    }, []);
-
-    const finishForm = (data) => {
-        try {
-            onAddLayer(data)
-            hideModal()
-        } catch(e) {
-            message.error(e.message)
+/**
+ * 地图控制面板
+ * @returns 
+ */
+function LayerManageView({ layers, onLayersChange }) {
+    // 新增一组位置
+    const addLayer = (newLayer) => {
+        const sameNameLayer = layers.filter(
+            (layer) => layer.name === newLayer.name
+        );
+        if (sameNameLayer.length > 0) {
+            throw new Error("名称重复");
         }
-    }
+        onLayersChange([...layers, newLayer]);
+    };
 
-    return <>
-        <Button onClick={e => {
-            setShowModal(true);
-        }}>
-            新增图层
-        </Button>
-        <Modal
-            visible={showModal}
-            onCancel={hideModal}
-        >
-            <h1 className='m-2 text-2xl'>新增图层</h1>
-            <Form onFinish={finishForm}>
-                <Form.Item name="name" rules={[{ required: true }]}>
-                    <Input className='m-2' placeholder="LayerName" />
-                </Form.Item>
-                <Form.Item name="points" rules={[{ required: true }]}>
-                    <GeojsonFileInput />
-                </Form.Item>
-                <Form.Item name="color" rules={[{ required: true }]}>
-                    <ColorInput />
-                </Form.Item>
-                <Form.Item>
-                    <Button onClick={hideModal}>Cancel</Button>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Modal>
-    </>
+    // 禁用
+    const toggleLayer = (name) => {
+        const newLayers = layers.map((layer) => {
+            return layer.name !== name
+                ? layer
+                : {
+                    ...layer,
+                    visible: !layer.visible,
+                };
+        });
+
+        return onLayersChange(newLayers);
+    };
+
+    return (
+        <div className="absolute left-2 top-2 bg-white p-5 rounded w-56">
+            {/* 图层列表 */}
+            <LayerListView layers={layers} onToggle={toggleLayer} />
+            {/* 弹窗 */}
+            <AddLayerView
+                onAddLayer={({ name, points, color }) => {
+                    addLayer({
+                        name,
+                        color,
+                        points,
+                        visible: true,
+                    });
+                }}
+            />
+        </div>
+    );
 }
 
 export default LayerManageView;

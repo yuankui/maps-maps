@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import "./App.css";
-import ControlPanelView from "./components/ControlPanelView";
+import LayerManageView from "./components/LayerManageView";
 import DeckGLView from "./components/DeckGLView";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
                     {/* 地图 */}
                     <DeckGLView geoJsons={visibleLayers} />
                     {/* 控制面板 */}
-                    <ControlPanelView
+                    <LayerManageView
                         layers={layers}
                         onLayersChange={setLayers}
                     />
