@@ -1,5 +1,10 @@
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
+/**
+ * 控制台图层数据列表
+ * @param {*} param0 
+ * @returns 
+ */
 function LayerListView({ layers, onToggle }) {
     return <>
         <h1 className='text-2xl mb-4'>图层管理</h1>

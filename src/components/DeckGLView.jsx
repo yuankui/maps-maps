@@ -7,6 +7,11 @@ import { StaticMap as MapboxMap, FullscreenControl, NavigationControl } from 're
 const mapboxAccessToken = 'pk.eyJ1IjoieXVhbmt1aSIsImEiOiJja3VtNGhranUwNzg3MzBsaWx2dnFod2ZjIn0.gCAWnEO9GQ2reK72LZXUQA';
 const mapboxStyle = "mapbox://styles/yuankui/ckumcg5loegxe17pr0kay2zkd"
 
+/**
+ * 转换颜色格式
+ * @param {*} color : ;
+ * @returns 
+ */
 function colorToRGBArray(color) {
     if (!color) {
         return [255, 255, 255, 0];
@@ -19,6 +24,8 @@ function colorToRGBArray(color) {
 }
 
 function DeckGLView({ geoJsons }) {
+
+    // 根据图层数据，建立deck.gl图层
     const layers = geoJsons.map(geojson => {
         return new GeoJsonLayer({
             id: 'geojson-layer:' + geojson.name,
@@ -40,6 +47,7 @@ function DeckGLView({ geoJsons }) {
         })
     })
 
+    // 设置原始坐标
     const [viewport, setViewport] = React.useState({
         longitude: 114.02589,
         latitude: 22.540777,
@@ -56,12 +64,15 @@ function DeckGLView({ geoJsons }) {
         <MapboxMap
             mapStyle={mapboxStyle}
             mapboxApiAccessToken={mapboxAccessToken}>
+            
+            {/* 全屏control */}
             <FullscreenControl style={{
                 right: 10,
                 top: 10,
                 zIndex: 10,
             }} />
 
+            {/* 缩放control */}
             <NavigationControl style={{
                 right: 10,
                 top: 50

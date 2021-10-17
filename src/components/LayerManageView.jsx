@@ -1,29 +1,24 @@
-import { Button, Input, message, Modal } from "antd";
-import { useCallback, useRef, useState } from "react";
-import { SketchPicker } from "react-color";
+import { Button, Form, Input, message, Modal } from "antd";
+import { useCallback, useState } from "react";
+import ColorInput from "./form/ColorInput";
+import GeojsonFileInput from "./form/GeojsonFileInput";
+
 
 function LayerManageView({ onAddLayer }) {
     const [showModal, setShowModal] = useState(false);
-    const [text, setText] = useState(undefined);
-    const [name, setName] = useState(undefined);
-    const [color, setColor] = useState('#FFFFFF')
 
-    const fileRef = useRef();
-
-    const reset = useCallback(() => {
-        setText(undefined);
-        setName(undefined);
-        if (fileRef.current != null) {
-            fileRef.current.setValue(null);
-        }
-    }, []);
-
-    
     const hideModal = useCallback(() => {
         setShowModal(false);
-        reset();
-    }, [reset]);
+    }, []);
 
+    const finishForm = (data) => {
+        try {
+            onAddLayer(data)
+            hideModal()
+        } catch(e) {
+            message.error(e.message)
+        }
+    }
 
     return <>
         <Button onClick={e => {
@@ -31,52 +26,28 @@ function LayerManageView({ onAddLayer }) {
         }}>
             新增图层
         </Button>
-        <Modal visible={showModal}
+        <Modal
+            visible={showModal}
             onCancel={hideModal}
-            onOk={e => {
-                if (name === undefined || name === '') {
-                    message.error("LayerName 不能为空");
-                    return;
-                }
-                if (color === undefined) {
-                    message.error("颜色不能为空");
-                    return;
-                }
-
-                if (text === undefined) {
-                    message.error("text不能为空");
-                    return;
-                }
-
-                let points;
-                try {
-                    points = JSON.parse(text);
-                } catch (e) {
-                    message.error("请选择geojson文件");
-                    return;
-                }
-                try {
-                    onAddLayer({ name, points, color });
-                } catch (e) {
-                    message.error(e.message);
-                    return;
-                }
-
-                reset();
-                hideModal();
-            }}
         >
             <h1 className='m-2 text-2xl'>新增图层</h1>
-            <Input className='m-2' value={name} placeholder="LayerName" onChange={e => {
-                setName(e.target.value);
-            }} />
-            <Input placeholder='geojson文件' accept='.geojson, .json' className='m-2' ref={fileRef} type='file' onChange={async (e) => {
-                const text = await e.target.files[0].text();
-                setText(text);
-            }} />
-            <SketchPicker className='m-2' color={color} onChange={e => {
-                setColor(e.hex);
-            }} />
+            <Form onFinish={finishForm}>
+                <Form.Item name="name" rules={[{ required: true }]}>
+                    <Input className='m-2' placeholder="LayerName" />
+                </Form.Item>
+                <Form.Item name="points" rules={[{ required: true }]}>
+                    <GeojsonFileInput />
+                </Form.Item>
+                <Form.Item name="color" rules={[{ required: true }]}>
+                    <ColorInput />
+                </Form.Item>
+                <Form.Item>
+                    <Button onClick={hideModal}>Cancel</Button>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
         </Modal>
     </>
 }
