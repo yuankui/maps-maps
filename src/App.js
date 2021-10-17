@@ -1,7 +1,7 @@
 import mitt from "mitt";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
-import FeatureMap from "./components/FeatureMap";
+import DeckGLView from "./components/DeckGLView";
 import LayerListView from "./components/LayerListView";
 import LayerManageView from "./components/LayerManageView";
 
@@ -47,19 +47,19 @@ function App() {
         return setLayers(newLayers);
     };
 
+    const visibleLayers = useMemo(() => {
+        return layers.filter(layer => !!layer.visible);
+    }, [layers])
+
     return (
-        <div className="App p-10 flex items-center flex-col">
-            <div className="w-3/4">
+        <div className="App p-10 flex items-center flex-col h-screen">
+            <div className="w-3/4 h-full flex flex-col">
                 <h1 className="font-bold font-5xl">Map Demo</h1>
 
-                <div className="relative flex flex-col items-stretch">
+                <div className="relative flex flex-col items-stretch flex-1">
                     {/* 地图 */}
-                    <FeatureMap
-                        accessToken={accessToken}
-                        mapStyle={styleUrl}
-                        emitter={emitter}
-                        id="map"
-                    />
+                    
+                    <DeckGLView geoJsons={visibleLayers}/>
                     {/* 控制面板 */}
                     <div className="absolute left-2 top-2 bg-white p-5 rounded w-56">
                         {/* 图层列表 */}

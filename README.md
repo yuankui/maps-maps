@@ -16,3 +16,8 @@ yarn
 yarn start
 
 ```
+
+
+## refer
+
+- https://deck.gl/docs/api-reference/layers/geojson-layer
