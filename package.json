@@ -51,5 +51,6 @@
     "autoprefixer": "^9",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
-  }
+  },
+  "homepage": "https://yuankui.github.io/maps-maps/"
 }
